@@ -44,7 +44,23 @@ Seguir formato [Keep a Changelog](https://keepachangelog.com/):
 - Funcionalidade W (deprecada)
 ```
 
-## Lembrete
+## Fluxo Completo
 
-Antes de fazer `git push` com mudanças significativas, perguntar:
-- "Devo atualizar o CHANGELOG e VERSION para refletir essas mudanças?"
+Após fazer mudanças significativas no template, o Agente DEVE:
+
+1. **Atualizar VERSION** - Incrementar conforme semântico
+2. **Atualizar CHANGELOG.md** - Documentar o que mudou
+3. **Commit** - `git add . && git commit -m "tipo: descrição"`
+4. **Push** - `git push`
+
+### Padrão de Commit
+- `feat:` - Nova funcionalidade
+- `fix:` - Correção de bug
+- `docs:` - Documentação
+- `refactor:` - Refatoração
+- `chore:` - Manutenção
+
+## Lembrete Final
+
+Antes de finalizar qualquer tarefa no template, perguntar:
+- "Devo atualizar o CHANGELOG/VERSION e fazer push?"
