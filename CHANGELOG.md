@@ -5,6 +5,25 @@ Todas as mudanças notáveis deste projeto serão documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [1.1.0] - 2024-12-26
+
+### Adicionado
+- Workflow `/atualizar-template` para projetos filhos sincronizarem com o template
+- Documentação de deploy Vercel (`docs/operacional/DEPLOY_VERCEL.md`)
+- Fase 5 (Deploy Vercel) no workflow `/criar-frontend`
+- Integração com Supabase MCP nos workflows `/criar-banco` e `/setup-projeto`
+- Regra `contexto-template.md` com informações de MCP
+
+### Alterado
+- Workflows agora usam MCP do Supabase para executar SQL diretamente
+- Reorganizado `.agent/` - arquivos soltos movidos para `rules/`
+- Adicionadas pastas `database/migrations/`, `database/seed/`, `frontend/` com .gitkeep
+
+### Corrigido
+- Sintaxe de secrets no Kestra (removido `$` antes de `{{ secret() }}`)
+- Comando de build Docker nos workflows (executar da raiz do projeto)
+- Deploy via TAGs documentado corretamente
+
 ## [1.0.0] - 2024-12-26
 
 ### Adicionado
@@ -17,7 +36,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - Rules do projeto em `.agent/rules/`
 
 ### Decisões Arquiteturais
-- ADR-01: Kestra Self-Hosted (e2-medium mínimo)
+- ADR-01: Kestra Cloud ou Self-Hosted (escolha do usuário)
 - ADR-02: Monorepo para workers
 - ADR-03: Python/FastAPI para workers
 - ADR-04: Módulos compartilhados via Dockerfile COPY
