@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useActionState, useState } from 'react'
-import { saveCredentials } from './actions'
+import React, { useActionState, useState, useEffect } from 'react'
+import { saveCredentials, checkSavedCredentials } from './actions'
 import styles from './page.module.css'
 
 const initialState = {
@@ -12,13 +12,20 @@ const initialState = {
 export default function CredentialsPage() {
     const [state, formAction, isPending] = useActionState(saveCredentials, initialState)
 
+    // Status de carregamento inicial
+    const [status, setStatus] = useState({ hasHotmart: false, hasMeta: false })
+
+    useEffect(() => {
+        checkSavedCredentials().then(setStatus)
+    }, [])
+
     // Exibição de senhas
     const [showHotmartSecret, setShowHotmartSecret] = useState(false)
     const [showMetaToken, setShowMetaToken] = useState(false)
 
     return (
         <div className={styles.container}>
-            <div className={`glass-panel ${styles.card}`}>
+            <div className={styles.card}>
                 <header className={styles.header}>
                     <h1 className={styles.title}>O Cofre Digital</h1>
                     <p className={styles.subtitle}>Insira as chaves para conectarmos suas plataformas com segurança.</p>
@@ -40,7 +47,10 @@ export default function CredentialsPage() {
 
                     {/* Seção Hotmart */}
                     <div className={styles.section}>
-                        <h2 className={styles.sectionTitle}>🔥 Hotmart API</h2>
+                        <h2 className={styles.sectionTitle}>
+                            🔥 Hotmart API
+                            {status.hasHotmart && <span style={{ color: '#4ade80', fontSize: '0.8rem', marginLeft: 'auto' }}>✓ Configurado</span>}
+                        </h2>
 
                         <div className={styles.formGroup}>
                             <label htmlFor="hotmart_client_id" className={styles.label}>Client ID</label>
@@ -48,9 +58,9 @@ export default function CredentialsPage() {
                                 type="text"
                                 id="hotmart_client_id"
                                 name="hotmart_client_id"
-                                placeholder="Ex: a1b2c3d4-..."
+                                placeholder={status.hasHotmart ? "(Salvo) ••••••••" : "Ex: a1b2c3d4-..."}
                                 className={`input-field ${styles.input}`}
-                                required
+                                required={!status.hasHotmart}
                             />
                         </div>
 
@@ -61,9 +71,9 @@ export default function CredentialsPage() {
                                     type={showHotmartSecret ? "text" : "password"}
                                     id="hotmart_client_secret"
                                     name="hotmart_client_secret"
-                                    placeholder="•••••••••••••••••••••"
+                                    placeholder={status.hasHotmart ? "(Salvo) •••••••••••••" : "•••••••••••••••••••••"}
                                     className={`input-field ${styles.input}`}
-                                    required
+                                    required={!status.hasHotmart}
                                 />
                                 <button
                                     type="button"
@@ -79,7 +89,10 @@ export default function CredentialsPage() {
 
                     {/* Seção Meta */}
                     <div className={`${styles.section} ${styles.sectionLast}`}>
-                        <h2 className={styles.sectionTitle}>💬 Meta WhatsApp</h2>
+                        <h2 className={styles.sectionTitle}>
+                            💬 Meta WhatsApp
+                            {status.hasMeta && <span style={{ color: '#4ade80', fontSize: '0.8rem', marginLeft: 'auto' }}>✓ Configurado</span>}
+                        </h2>
 
                         <div className={styles.formGroup}>
                             <label htmlFor="meta_business_id" className={styles.label}>Business ID</label>
@@ -87,9 +100,9 @@ export default function CredentialsPage() {
                                 type="text"
                                 id="meta_business_id"
                                 name="meta_business_id"
-                                placeholder="Ex: 100200300..."
+                                placeholder={status.hasMeta ? "(Salvo) ••••••••" : "Ex: 100200300..."}
                                 className={`input-field ${styles.input}`}
-                                required
+                                required={!status.hasMeta}
                             />
                         </div>
 
@@ -100,9 +113,9 @@ export default function CredentialsPage() {
                                     type={showMetaToken ? "text" : "password"}
                                     id="meta_access_token"
                                     name="meta_access_token"
-                                    placeholder="EAAB..."
+                                    placeholder={status.hasMeta ? "(Salvo) •••••••••••••" : "EAAB..."}
                                     className={`input-field ${styles.input}`}
-                                    required
+                                    required={!status.hasMeta}
                                 />
                                 <button
                                     type="button"

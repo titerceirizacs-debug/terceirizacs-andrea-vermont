@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useActionState } from 'react'
-import { saveSpecialistData } from './actions'
+import React, { useActionState, useEffect, useState } from 'react'
+import { salvarDadosEspecialista, getSpecialistData } from './actions'
 import styles from './page.module.css'
 
 const initialState = {
@@ -9,12 +9,24 @@ const initialState = {
     success: false
 }
 
-export default function SpecialistSetupPage() {
-    const [state, formAction, isPending] = useActionState(saveSpecialistData, initialState)
+export default function SpecialistPage() {
+    const [state, formAction, isPending] = useActionState(salvarDadosEspecialista, initialState)
+
+    // Local state para inputs (permite pre-fill)
+    const [nome, setNome] = useState('')
+    const [nicho, setNicho] = useState('')
+
+    useEffect(() => {
+        // Carrega dados salvos ao abrir a tela
+        getSpecialistData().then(data => {
+            if (data.nome) setNome(data.nome)
+            if (data.nicho) setNicho(data.nicho)
+        })
+    }, [])
 
     return (
         <div className={styles.container}>
-            <div className={`glass-panel ${styles.card}`}>
+            <form action={formAction} className={styles.card}>
                 <header className={styles.header}>
                     <h1 className={styles.title}>Bem-vindo, Especialista</h1>
                     <p className={styles.subtitle}>Vamos definir a identidade do seu negócio.</p>
@@ -22,17 +34,11 @@ export default function SpecialistSetupPage() {
 
                 {state.success && (
                     <div className={styles.success}>
-                        Dados salvos com sucesso! Redirecionando...
+                        Dados salvos com sucesso! Pode avançar.
                     </div>
                 )}
 
-                {state.error && (
-                    <div className={styles.error}>
-                        {state.error}
-                    </div>
-                )}
-
-                <form action={formAction} className={styles.form}>
+                <div className={styles.form}>
                     <div className={styles.formGroup}>
                         <label htmlFor="name" className={styles.label}>Como você quer ser chamado?</label>
                         <input
@@ -41,6 +47,8 @@ export default function SpecialistSetupPage() {
                             name="name"
                             placeholder="Ex: Tiago Gladstone"
                             className={`input-field ${styles.input}`}
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
                             required
                         />
                     </div>
@@ -53,6 +61,8 @@ export default function SpecialistSetupPage() {
                             name="niche"
                             placeholder="Ex: Marketing Digital, Finanças..."
                             className={`input-field ${styles.input}`}
+                            value={nicho}
+                            onChange={(e) => setNicho(e.target.value)}
                             required
                         />
                     </div>
@@ -62,8 +72,8 @@ export default function SpecialistSetupPage() {
                             {isPending ? 'Salvando...' : 'Continuar Configuração'}
                         </button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     )
 }

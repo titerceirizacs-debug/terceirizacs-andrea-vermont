@@ -66,23 +66,37 @@ export class HotmartService {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            next: { revalidate: 0 } // No cache
+            next: { revalidate: 0 }
         })
 
+        // Debug: Ler como texto primeiro para ver o que realmente voltou
+        const responseText = await response.text()
+
         if (!response.ok) {
-            throw new Error('Falha ao buscar produtos na Hotmart.')
+            console.error('Erro API Hotmart Produtos:', response.status, responseText)
+            throw new Error(`Falha Hotmart (${response.status}): ${responseText || 'Sem mensagem'}`)
         }
 
-        const json = await response.json()
-        // Hotmart retorna { data: { items: [...] } } ou { items: [...] } dependendo da versão, 
-        // mas a doc atual sugere items direto ou dentro de data. Vamos ser defensivos.
-        const items = json.items || json.data || []
+        if (!responseText) {
+            console.warn('API Hotmart retornou corpo vazio.')
+            return []
+        }
 
-        return items.map((item: any) => ({
-            id: item.id,
-            name: item.name,
-            ucode: item.ucode,
-            active: item.active
-        }))
+        try {
+            const json = JSON.parse(responseText)
+            // Hotmart retorna { data: { items: [...] } } ou { items: [...] }
+            // A estrutura real costuma ser paginada: { items: [...], page_info: {...} }
+            const items = json.items || (json.data && json.data.items) || json.data || []
+
+            return items.map((item: any) => ({
+                id: item.id,
+                name: item.name,
+                ucode: item.ucode,
+                active: item.active
+            }))
+        } catch (e) {
+            console.error('Erro ao parsear JSON Hotmart:', e, 'Response:', responseText)
+            throw new Error('A resposta da Hotmart não é um JSON válido.')
+        }
     }
 }

@@ -43,3 +43,18 @@ export async function saveCredentials(prevState: ActionState, formData: FormData
 
     return { success: true }
 }
+
+export async function checkSavedCredentials() {
+    const supabase = await createClient()
+    const { data } = await supabase
+        .from('configuracoes')
+        .select('chave')
+        .in('chave', ['hotmart_client_id', 'meta_business_id'])
+
+    if (!data) return { hasHotmart: false, hasMeta: false }
+
+    return {
+        hasHotmart: data.some(c => c.chave === 'hotmart_client_id'),
+        hasMeta: data.some(c => c.chave === 'meta_business_id')
+    }
+}
