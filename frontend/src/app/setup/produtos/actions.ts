@@ -55,3 +55,14 @@ export async function saveSelectedProductsAction(products: any[]) {
 
     return { success: true }
 }
+
+export async function getSubdomain() {
+    const supabase = await createClient()
+    const { data } = await supabase
+        .from('configuracoes')
+        .select('valor')
+        .eq('chave', 'hotmart_subdomain')
+        .single()
+
+    return data?.valor || ''
+}

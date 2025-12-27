@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { fetchProductsAction, saveSelectedProductsAction } from './actions'
+import { fetchProductsAction, saveSelectedProductsAction, getSubdomain } from './actions'
 import styles from './page.module.css'
 
 interface Product {
@@ -18,6 +18,12 @@ export default function ProductsPage() {
     const [products, setProducts] = useState<Product[]>([])
     const [selectedIds, setSelectedIds] = useState<number[]>([])
     const [saving, setSaving] = useState(false)
+
+    useEffect(() => {
+        getSubdomain().then(val => {
+            if (val) setSubdomain(val)
+        })
+    }, [])
 
     const handleSearch = async () => {
         if (!subdomain) return
