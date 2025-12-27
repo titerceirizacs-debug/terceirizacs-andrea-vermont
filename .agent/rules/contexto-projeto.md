@@ -36,7 +36,7 @@ description: Contexto específico do projeto Terceiriza CS Andrea Vermont
 | Google Cloud | ✅ | Projeto configurado |
 | Kestra | ✅ | Configurado (Self-Hosted: http://35.232.175.181:8080) |
 | Supabase | ✅ | Conectado (tcqliyosmlvjihnmyhjp) |
-| Frontend (Vercel) | 🚧 | Configurando |
+| Frontend (Vercel) | ✅ | Conectado (https://terceirizacs-andrea-vermont.vercel.app/) |
 
 ---
 
@@ -44,3 +44,4 @@ description: Contexto específico do projeto Terceiriza CS Andrea Vermont
 
 - **Kestra:** Self-Hosted (VM no GCP)
 - **Região GCP:** us-central1 (Recomendado)
+- **Frontend:** Next.js + Vercel
