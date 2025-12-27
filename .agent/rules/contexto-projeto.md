@@ -34,13 +34,13 @@ description: Contexto específico do projeto Terceiriza CS Andrea Vermont
 | Git Local | ✅ | Configurado |
 | GitHub | ✅ | Conectado |
 | Google Cloud | ✅ | Projeto configurado |
-| Kestra | ❌ | Pendente |
-| Supabase | ❌ | Pendente |
-| Frontend (Vercel) | ❌ | Pendente |
+| Kestra | ✅ | Configurado (Self-Hosted: http://35.232.175.181:8080) |
+| Supabase | ✅ | Conectado (tcqliyosmlvjihnmyhjp) |
+| Frontend (Vercel) | 🚧 | Configurando |
 
 ---
 
 ## Decisões Técnicas
 
-- **Kestra:** (a definir - Cloud ou Self-Hosted)
-- **Região GCP:** (a definir)
+- **Kestra:** Self-Hosted (VM no GCP)
+- **Região GCP:** us-central1 (Recomendado)
