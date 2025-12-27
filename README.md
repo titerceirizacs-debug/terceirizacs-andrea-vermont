@@ -1,6 +1,8 @@
-# 🚀 Stack de Automação: Kestra + Google Cloud Run
+# 🚀 Terceiriza CS Andrea Vermont
 
-**Versão:** 1.0.0
+**Stack:** Kestra + Google Cloud Run  
+**Versão:** 1.0.0  
+**Baseado em:** [kestra-cloudrun-template](https://github.com/tiagogladstone/kestra-cloudrun-template) v1.1.0
 
 ---
 
