@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { fetchProductsAction, saveSelectedProductsAction, getSubdomain } from './actions'
 import styles from './page.module.css'
 
